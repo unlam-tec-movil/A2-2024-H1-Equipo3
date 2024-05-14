@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ScaffoldingV2</string>
+    <string name="loading_esp">Cargando...</string>
+
 </resources>
