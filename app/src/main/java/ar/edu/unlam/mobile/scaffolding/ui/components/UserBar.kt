@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun UserBar(userName:String = "Nickname", userCoins:Int = 0){
 
+    //Composable inutil, probablemente eliminado para el sprint 3
     Row (modifier = Modifier.fillMaxWidth()){
         Box(modifier = Modifier.padding(15.dp)) {
             UserProfilePicture()
