@@ -47,7 +47,7 @@ fun HomeScreen(
 @Composable
 fun PantallaInicio(){
 val pokemonCorrecto = PokemonTestRepository.obtenerPokemon()
-    Column {
+    Column(Modifier.fillMaxSize()) {
 
         PokemonImage(pokemon = pokemonCorrecto)
         BotonOpcion(pokemonCorrecto.nombre)
