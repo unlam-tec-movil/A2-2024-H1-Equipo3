@@ -18,7 +18,6 @@ class GameViewModel @Inject constructor(private val getOptionsUseCase: GetOption
 
     private val _uiState = MutableStateFlow<GameUiState>(GameUiState.Loading)
     val uiState = _uiState.asStateFlow()
-
     init {
         getTriviaOptions()
     }
@@ -48,7 +47,6 @@ class GameViewModel @Inject constructor(private val getOptionsUseCase: GetOption
         _uiState.update { GameUiState.Loading }
         getTriviaOptions()
     }
-
     private fun TriviaOption.toUi() = TriviaOptionUi(
         text = this.option,
         isCorrect = this.isCorrect,
@@ -56,11 +54,13 @@ class GameViewModel @Inject constructor(private val getOptionsUseCase: GetOption
     )
 
 
-
 }
 
 sealed interface GameUiState {
-    data class Success(val triviaOptions: List<TriviaOptionUi>,val isOptionSelected: Boolean = false) : GameUiState
+    data class Success(
+        val triviaOptions: List<TriviaOptionUi>,
+        val isOptionSelected: Boolean = false
+    ) : GameUiState
 
     data object Loading : GameUiState
 
