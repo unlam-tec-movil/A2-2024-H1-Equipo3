@@ -1,9 +1,9 @@
-package ar.edu.unlam.mobile.scaffolding.domain.repository
+package ar.edu.unlam.mobile.scaffolding.domain.usecases
 
 import ar.edu.unlam.mobile.scaffolding.domain.services.Pokemon
 
 
-interface PokemonRepository {
+interface GetPokemonRepositoryUseCase {
 
     fun getOptions(): List<Pokemon>
 }

@@ -1,8 +1,8 @@
 package ar.edu.unlam.mobile.scaffolding.data.di
 
-import ar.edu.unlam.mobile.scaffolding.domain.repository.PokemonRepository
 import ar.edu.unlam.mobile.scaffolding.domain.services.GetOptionsService
 import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetOptionsUseCase
+import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetPokemonRepositoryUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -17,7 +17,7 @@ import javax.inject.Singleton
 object DomainModule {
     @Singleton
     @Provides
-     fun provideGetOptionsUseCase(pokemonRepository: PokemonRepository): GetOptionsUseCase{
-         return GetOptionsService(pokemonRepository)
-     }
+    fun provideGetOptionsUseCase(pokemonRepository: GetPokemonRepositoryUseCase): GetOptionsUseCase {
+        return GetOptionsService(pokemonRepository)
+    }
 }
