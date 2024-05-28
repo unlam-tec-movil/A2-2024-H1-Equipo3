@@ -24,17 +24,15 @@ import ar.edu.unlam.mobile.scaffolding.ui.theme.optionButtonColor
 @Composable
 fun BotonOpcion(pokemon : String = ""){
 
-
-    Button(onClick = { /*TODO*/ },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp)
-            .border(width = 3.dp, color = Color.Black, shape = RoundedCornerShape(20.dp)),
+    Button( modifier = Modifier
+        .fillMaxWidth()
+        .border(width = 3.dp, color = Color.Black, shape = RoundedCornerShape(20.dp)),
+        onClick = { /*TODO*/ },
         colors = ButtonDefaults.buttonColors(
             containerColor = optionButtonColor,
             contentColor = Color.White,
         )) {
-        Text(modifier = Modifier.fillMaxSize().padding(top = 5.dp),
+        Text(modifier = Modifier.padding(top = 5.dp),
             text = pokemon,
             textAlign = TextAlign.Center,
             style = TextStyle(fontSize = 25.sp)

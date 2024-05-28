@@ -2,13 +2,17 @@ package ar.edu.unlam.mobile.scaffolding.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -42,7 +46,7 @@ fun GameScreen(
 
         is GameUiState.Success -> {
             viewModel.searchCorrectPokemon(gameState.triviaOptions)
-                ?.let { GameScreen(gameState.triviaOptions, it) }
+                ?.let { GameScreenUI(gameState.triviaOptions, it) }
         }
 
         is GameUiState.Error -> {
@@ -53,47 +57,56 @@ fun GameScreen(
 }
 
 @Composable
-fun GameScreen(pokemonList: List<TriviaOptionUi>, pokemonCorrecto: Pokemon){
+fun GameScreenUI(pokemonList: List<TriviaOptionUi>, pokemonCorrecto: Pokemon) {
 
 //TODO se debe trabajar en la logica del juego
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color.Black)){
         Image(
             modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = R.drawable.game_background),
             contentDescription = "Imagen de fondo"
         )
-    }
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)) {
-        Row {
-            var numeroVida:Int = 1
-            repeat(3) {
-                Icon(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .padding(start = 10.dp, top = 10.dp),
-                    painter = painterResource(id = R.drawable.vida),
-                    contentDescription = "vida$numeroVida",
-                    tint = Color.White
-                )
-            numeroVida++
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+        ) {
+            Row {
+                var numeroVida: Int = 1
+                repeat(3) {
+                    Icon(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .padding(start = 10.dp, top = 10.dp),
+                        painter = painterResource(id = R.drawable.vida),
+                        contentDescription = "vida$numeroVida",
+                        tint = Color.White
+                    )
+                    numeroVida++
+                }
+            }
+
+            PokemonImage(
+                pokemon = pokemonCorrecto,
+                Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .size(300.dp)
+                    .padding(top = 40.dp)
+            )
+
+
+            Spacer(modifier = Modifier.height(35.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                for (i in pokemonList){
+                    BotonOpcion(i.pokemon.nombre)
+                }
             }
         }
+}
 
-            PokemonImage(pokemon = pokemonCorrecto,
-            Modifier
-                .align(Alignment.CenterHorizontally)
-                .size(300.dp)
-                .padding(top = 40.dp)) }
-
-        Spacer(modifier = Modifier.padding(35.dp))
-
-            for (i in pokemonList) {
-            Spacer(modifier = Modifier.padding(16.dp))
-            BotonOpcion(i.pokemon.nombre)
-        }
-    }
