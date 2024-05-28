@@ -3,11 +3,11 @@ package ar.edu.unlam.mobile.scaffolding.ui.screens
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.edu.unlam.mobile.scaffolding.domain.model.TriviaOption
+import ar.edu.unlam.mobile.scaffolding.domain.services.Pokemon
 import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetOptionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +22,15 @@ class GameViewModel @Inject constructor(private val getOptionsUseCase: GetOption
         getTriviaOptions()
     }
 
+    fun searchCorrectPokemon(listaPokemon: List<TriviaOptionUi>): Pokemon? {
+
+        for (i in listaPokemon){
+            if (i.isCorrect){
+                return i.pokemon
+            }
+        }
+        return null
+    }
     fun getTriviaOptions() {
         viewModelScope.launch {
             try {
@@ -48,7 +57,7 @@ class GameViewModel @Inject constructor(private val getOptionsUseCase: GetOption
         getTriviaOptions()
     }
     private fun TriviaOption.toUi() = TriviaOptionUi(
-        text = this.option,
+        pokemon = this.option,
         isCorrect = this.isCorrect,
         answerState = AnswerState.NOT_ANSWERED
     )

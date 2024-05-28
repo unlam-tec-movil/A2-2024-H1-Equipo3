@@ -1,6 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.domain.services
 
-import ar.edu.unlam.mobile.scaffolding.domain.usecases.PokemonRepository
+import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetPokemonRepositoryUseCase
 import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetOptionsUseCase
 import org.junit.Assert.*
 
@@ -10,7 +10,7 @@ import org.junit.Test
 class GetOptionsServiceTest {
 
     private lateinit var getOptionsService: GetOptionsUseCase
-    private val pokemonRepository: PokemonRepository = FakePokemonRepository()
+    private val pokemonRepository: GetPokemonRepositoryUseCase = FakeGetPokemonRepositoryUseCase()
     @Before
     fun setUp() {
         getOptionsService = GetOptionsService(pokemonRepository)

@@ -20,15 +20,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ar.edu.unlam.mobile.scaffolding.data.repository.PokemonTestRepository
-import ar.edu.unlam.mobile.scaffolding.domain.services.GetOptionsService
 import ar.edu.unlam.mobile.scaffolding.ui.components.BotonOpcion
 import ar.edu.unlam.mobile.scaffolding.ui.components.LoadingScreen
 import ar.edu.unlam.mobile.scaffolding.ui.components.PokemonImage
 import ar.edu.unlam.mobile.scaffolding.R
+import ar.edu.unlam.mobile.scaffolding.data.repository.PokemonTestRepository
+import ar.edu.unlam.mobile.scaffolding.domain.services.Pokemon
 
 @Composable
-fun GameScren(
+fun GameScreen(
     modifier: Modifier = Modifier.fillMaxSize(),
     viewModel: GameViewModel = hiltViewModel()) {
 
@@ -41,7 +41,8 @@ fun GameScren(
         }
 
         is GameUiState.Success -> {
-            GameScreen()
+            viewModel.searchCorrectPokemon(gameState.triviaOptions)
+                ?.let { GameScreen(gameState.triviaOptions, it) }
         }
 
         is GameUiState.Error -> {
@@ -50,11 +51,12 @@ fun GameScren(
     }
 
 }
-@Preview
-@Composable
-fun GameScreen(){
 
-val opciones = GetOptionsService(PokemonTestRepository)
+@Composable
+fun GameScreen(pokemonList: List<TriviaOptionUi>, pokemonCorrecto: Pokemon){
+
+//TODO se debe trabajar en la logica del juego
+
     Box(modifier = Modifier
         .fillMaxSize()
         .background(color = Color.Black)){
@@ -81,7 +83,8 @@ val opciones = GetOptionsService(PokemonTestRepository)
             numeroVida++
             }
         }
-        opciones.obtenerPokemonCorrecto()?.let { PokemonImage(pokemon = it,
+
+            PokemonImage(pokemon = pokemonCorrecto,
             Modifier
                 .align(Alignment.CenterHorizontally)
                 .size(300.dp)
@@ -89,10 +92,8 @@ val opciones = GetOptionsService(PokemonTestRepository)
 
         Spacer(modifier = Modifier.padding(35.dp))
 
-        opciones.getOptions().forEach {
+            for (i in pokemonList) {
             Spacer(modifier = Modifier.padding(16.dp))
-            BotonOpcion(it.option.nombre)
+            BotonOpcion(i.pokemon.nombre)
         }
     }
-
-}
