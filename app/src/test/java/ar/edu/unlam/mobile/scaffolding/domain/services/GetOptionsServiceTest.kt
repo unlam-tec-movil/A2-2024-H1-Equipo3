@@ -1,6 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.domain.services
 
-import ar.edu.unlam.mobile.scaffolding.domain.repository.PokemonRepository
+import ar.edu.unlam.mobile.scaffolding.domain.usecases.PokemonRepository
 import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetOptionsUseCase
 import org.junit.Assert.*
 

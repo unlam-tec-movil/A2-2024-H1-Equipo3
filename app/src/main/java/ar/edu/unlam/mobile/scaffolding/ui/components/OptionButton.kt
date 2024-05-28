@@ -1,43 +1,44 @@
 package ar.edu.unlam.mobile.scaffolding.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.graphics.Color
-import ar.edu.unlam.mobile.scaffolding.R
-import ar.edu.unlam.mobile.scaffolding.ui.theme.rojoPokeball
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
+import ar.edu.unlam.mobile.scaffolding.ui.theme.optionButtonColor
 
 
 @Preview
 @Composable
 fun BotonOpcion(pokemon : String = ""){
 
-    //Hay que cambiarle el tamaño para que ocupe todo el largo de la pantalla
-    //Y que tenga un padding, si es posible redondearlo mejor.
 
     Button(onClick = { /*TODO*/ },
         modifier = Modifier
             .fillMaxWidth()
-            .height(48.dp),
+            .height(50.dp)
+            .border(width = 3.dp, color = Color.Black, shape = RoundedCornerShape(20.dp)),
         colors = ButtonDefaults.buttonColors(
-            containerColor = rojoPokeball,
-            contentColor = Color.White
+            containerColor = optionButtonColor,
+            contentColor = Color.White,
         )) {
-        Text(text = pokemon)
+        Text(modifier = Modifier.fillMaxSize().padding(top = 5.dp),
+            text = pokemon,
+            textAlign = TextAlign.Center,
+            style = TextStyle(fontSize = 25.sp)
+        )
     }
 
 }

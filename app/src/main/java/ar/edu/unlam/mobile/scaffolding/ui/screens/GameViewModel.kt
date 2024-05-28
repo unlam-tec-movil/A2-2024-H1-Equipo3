@@ -56,7 +56,7 @@ class GameViewModel @Inject constructor(private val getOptionsUseCase: GetOption
 
 }
 
-sealed interface GameUiState {
+ sealed interface GameUiState {
     data class Success(
         val triviaOptions: List<TriviaOptionUi>,
         val isOptionSelected: Boolean = false
