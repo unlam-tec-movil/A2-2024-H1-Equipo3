@@ -29,7 +29,9 @@ import ar.edu.unlam.mobile.scaffolding.ui.components.LoadingScreen
 import ar.edu.unlam.mobile.scaffolding.ui.components.PokemonImage
 import ar.edu.unlam.mobile.scaffolding.R
 import ar.edu.unlam.mobile.scaffolding.data.repository.PokemonTestRepository
+import ar.edu.unlam.mobile.scaffolding.domain.services.GetOptionsService
 import ar.edu.unlam.mobile.scaffolding.domain.services.Pokemon
+import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetOptionsUseCase
 
 @Composable
 fun GameScreen(
@@ -50,9 +52,30 @@ fun GameScreen(
         }
 
         is GameUiState.Error -> {
-            // Error
+            // TODO Manejar flujo de error
         }
     }
+
+}
+
+//Ejemplo hardcodeado para poder previsualizar la pantalla
+@Preview
+@Composable
+fun PreviewGameScreen(){
+    val charmander = TriviaOptionUi(PokemonTestRepository.charmander, isCorrect = true, answerState = AnswerState.NOT_ANSWERED)
+    val bulbasaur = TriviaOptionUi(PokemonTestRepository.bulbasaur, isCorrect = false, answerState = AnswerState.NOT_ANSWERED)
+    val squirtle = TriviaOptionUi(PokemonTestRepository.squirtle, isCorrect = false, answerState = AnswerState.NOT_ANSWERED)
+    val pikachu = TriviaOptionUi(PokemonTestRepository.pikachu, isCorrect = false, answerState = AnswerState.NOT_ANSWERED)
+
+    val listaPokemon = listOf(
+        charmander,
+        bulbasaur,
+        squirtle,
+        pikachu
+    ).shuffled()
+    val pokemonCorrecto = PokemonTestRepository.charmander
+
+    GameScreenUI(pokemonList = listaPokemon, pokemonCorrecto)
 
 }
 

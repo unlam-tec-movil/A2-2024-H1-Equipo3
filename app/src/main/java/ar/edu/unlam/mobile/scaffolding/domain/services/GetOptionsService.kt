@@ -13,6 +13,7 @@ class GetOptionsService @Inject constructor(
     override fun getOptions(): List<TriviaOption> {
         return getPokemonRepository.getOptions()
             .take(4)
+            .shuffled()
             .mapIndexed { indx, pkmn -> TriviaOption(pkmn, indx == 0) }
             .shuffled()
     }

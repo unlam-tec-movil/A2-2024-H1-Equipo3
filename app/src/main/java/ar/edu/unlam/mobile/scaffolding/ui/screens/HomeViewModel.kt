@@ -2,45 +2,49 @@ package ar.edu.unlam.mobile.scaffolding.ui.screens
 
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @Immutable
-sealed interface HelloMessageUIState {
-    data class Success(val message: String) : HelloMessageUIState
+sealed interface HomeUIState {
+    data class Success(val options: List<String>) : HomeUIState
 
-    data object Loading : HelloMessageUIState
+    data object Loading : HomeUIState
 
-    data class Error(val message: String) : HelloMessageUIState
+    data class Error(val message: String) : HomeUIState
 }
-
-data class HomeUIState(
-    val helloMessageState: HelloMessageUIState,
-)
 
 @HiltViewModel
 class HomeViewModel
     @Inject
     constructor() : ViewModel() {
-        // Mutable State Flow contiene un objeto de estado mutable. Simplifica la operación de
-        // actualización de información y de manejo de estados de una aplicación: Cargando, Error, Éxito
-        // (https://developer.android.com/kotlin/flow/stateflow-and-sharedflow)
-        // _helloMessage State es el estado del componente "HelloMessage" inicializado como "Cargando"
-        private val helloMessage = MutableStateFlow(HelloMessageUIState.Loading)
 
-        // _Ui State es el estado general del view model.
-        private val _uiState =
-            MutableStateFlow(
-                HomeUIState(helloMessage.value),
-            )
-
-        // UIState expone el estado anterior como un Flujo de Estado de solo lectura.
-        // Esto impide que se pueda modificar el estado desde fuera del ViewModel.
-        val uiState = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<HomeUIState>(HomeUIState.Loading)
+    val uiState = _uiState.asStateFlow()
 
         init {
-            _uiState.value = HomeUIState(HelloMessageUIState.Success("2b"))
+            createView()
         }
+
+    private fun createView(){
+        viewModelScope.launch {
+            _uiState.value = HomeUIState.Loading
+            //Simula una pantalla de carga
+            delay(2000)
+
+            try {
+                val listaOpciones = listOf("Jugar", "Salir")
+                _uiState.value = HomeUIState.Success(listaOpciones)
+            } catch (e:Exception){
+                _uiState.value = HomeUIState.Error("Ups... Ocurrio un error")
+            }
+
+        }
+    }
+
     }
