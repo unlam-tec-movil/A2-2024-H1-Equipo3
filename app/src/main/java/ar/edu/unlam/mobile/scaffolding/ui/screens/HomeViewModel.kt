@@ -23,28 +23,25 @@ sealed interface HomeUIState {
 class HomeViewModel
     @Inject
     constructor() : ViewModel() {
-
-    private val _uiState = MutableStateFlow<HomeUIState>(HomeUIState.Loading)
-    val uiState = _uiState.asStateFlow()
+        private val _uiState = MutableStateFlow<HomeUIState>(HomeUIState.Loading)
+        val uiState = _uiState.asStateFlow()
 
         init {
             createView()
         }
 
-    private fun createView(){
-        viewModelScope.launch {
-            _uiState.value = HomeUIState.Loading
-            //Simula una pantalla de carga
-            delay(2000)
+        private fun createView() {
+            viewModelScope.launch {
+                _uiState.value = HomeUIState.Loading
+                // Simula una pantalla de carga
+                delay(2000)
 
-            try {
-                val listaOpciones = listOf("Jugar", "Salir")
-                _uiState.value = HomeUIState.Success(listaOpciones)
-            } catch (e:Exception){
-                _uiState.value = HomeUIState.Error("Ups... Ocurrio un error")
+                try {
+                    val listaOpciones = listOf("Jugar", "Salir")
+                    _uiState.value = HomeUIState.Success(listaOpciones)
+                } catch (e: Exception) {
+                    _uiState.value = HomeUIState.Error("Ups... Ocurrio un error")
+                }
             }
-
         }
-    }
-
     }

@@ -1,15 +1,12 @@
 package ar.edu.unlam.mobile.scaffolding.data.repository
 
-import ar.edu.unlam.mobile.scaffolding.domain.services.Pokemon
 import ar.edu.unlam.mobile.scaffolding.R
-import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetPokemonRepositoryUseCase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import ar.edu.unlam.mobile.scaffolding.domain.model.Pokemon
+import ar.edu.unlam.mobile.scaffolding.domain.usecases.PokemonRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-
-object PokemonTestRepository : GetPokemonRepositoryUseCase {
+object PokemonTestRepository : PokemonRepository {
 
     val bulbasaur = Pokemon("Bulbasaur", "Planta", R.drawable.bulbasaur)
 
@@ -21,13 +18,15 @@ object PokemonTestRepository : GetPokemonRepositoryUseCase {
 
     val PokemonRepository = mutableListOf(bulbasaur, charmander, squirtle, pikachu)
 
-    override fun getOptions(): List<Pokemon> {
-        return PokemonRepository
+    override fun getOptions(): Flow<List<Pokemon>> {
+        return flow {
+            emit(PokemonRepository)
+        }
     }
 
     //    fun obtenerPokemon(): Pokemon {
-      //  var nAleatorio = Random()
-        //return PokemonRepository[nAleatorio.nextInt(3)]
+    //  var nAleatorio = Random()
+    //return PokemonRepository[nAleatorio.nextInt(3)]
     //}
 
 }

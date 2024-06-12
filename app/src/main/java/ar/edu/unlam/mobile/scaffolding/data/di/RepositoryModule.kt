@@ -1,8 +1,7 @@
 package ar.edu.unlam.mobile.scaffolding.data.di
 
 import ar.edu.unlam.mobile.scaffolding.data.repository.PokemonTestRepository
-import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetPokemonRepositoryUseCase
-import dagger.Binds
+import ar.edu.unlam.mobile.scaffolding.domain.usecases.PokemonRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +13,7 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Singleton
     @Provides
-    fun providePokemonRepository(): GetPokemonRepositoryUseCase{
+    fun providePokemonRepository(): PokemonRepository{
         return PokemonTestRepository
     }
 
