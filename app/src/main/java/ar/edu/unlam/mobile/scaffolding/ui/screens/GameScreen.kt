@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ar.edu.unlam.mobile.scaffolding.R
-import ar.edu.unlam.mobile.scaffolding.data.repository.PokemonTestRepository
+import ar.edu.unlam.mobile.scaffolding.data.repository.pokemonrepository.PokemonTestRepository
 import ar.edu.unlam.mobile.scaffolding.domain.model.Pokemon
 import ar.edu.unlam.mobile.scaffolding.ui.components.LoadingScreen
 import ar.edu.unlam.mobile.scaffolding.ui.components.PokeOptions
@@ -53,7 +53,7 @@ fun GameScreen(
         }
 
         is GameUiState.Error -> {
-            // TODO Manejar flujo de error
+
         }
     }
 }

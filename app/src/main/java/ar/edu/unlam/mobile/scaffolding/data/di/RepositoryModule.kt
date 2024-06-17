@@ -1,6 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.data.di
 
-import ar.edu.unlam.mobile.scaffolding.data.repository.PokemonTestRepository
+import ar.edu.unlam.mobile.scaffolding.data.repository.pokemonrepository.PokemonTestRepository
 import ar.edu.unlam.mobile.scaffolding.domain.usecases.PokemonRepository
 import dagger.Module
 import dagger.Provides
@@ -14,7 +14,7 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun providePokemonRepository(): PokemonRepository{
-        return PokemonTestRepository
+        return PokemonTestRepository()
     }
 
 }
