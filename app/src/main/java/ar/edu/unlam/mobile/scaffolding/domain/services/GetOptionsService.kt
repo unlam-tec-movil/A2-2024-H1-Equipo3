@@ -18,11 +18,12 @@ class GetOptionsService @Inject constructor(
         private const val optionsAmount = 4
     }
 
-    private val offset: Int
-        get() = (0..500).random()
+
 
     override fun getNewGame(): Flow<TriviaGame> {
         return flow {
+             val offset: Int = (0..500).random()
+
             getPokemonRepository.getOptions(optionsAmount, offset)
                 .collect { pokemons ->
                     var correctOption: TriviaOption? = null
