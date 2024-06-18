@@ -3,13 +3,18 @@ package ar.edu.unlam.mobile.scaffolding
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import ar.edu.unlam.mobile.scaffolding.ui.components.TopBar
+import ar.edu.unlam.mobile.scaffolding.ui.screens.FinishScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.GameScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.gamehistory.GameHistoryScreen
@@ -23,20 +28,36 @@ class MainActivity : ComponentActivity() {
         setContent {
             val controller = rememberNavController()
             ScaffoldingV2Theme {
-                Scaffold(topBar = { TopBar() }) { paddingValue ->
-                    NavHost(navController = controller, startDestination = "home") {
+                Scaffold { paddingValue ->
+                    NavHost(
+                        navController = controller,
+                        startDestination = NavigationRoutes.Menu.route
+                    ) {
                         composable(NavigationRoutes.Menu.route) {
                             HomeScreen(
-                                startGameAction = {
-                                    controller.navigate("game")
-                                }, modifier = Modifier.padding(paddingValue)
+                                modifier = Modifier.padding(paddingValue),
+                                navController = controller
                             )
                         }
                         composable(NavigationRoutes.StartGame.route) {
-                            GameScreen(controller)
+                            GameScreen(
+                                modifier = Modifier.padding(paddingValue),
+                                navController = controller
+                            )
                         }
                         composable(NavigationRoutes.GameHistory.route) {
-                            GameHistoryScreen()
+                            GameHistoryScreen(modifier = Modifier.padding(paddingValue))
+                        }
+                        composable(NavigationRoutes.FinishGame.route,
+                            arguments = listOf(navArgument("game_score") { type = NavType.IntType })) { backentry ->
+                            val score = rememberSaveable {
+                                backentry.arguments?.getInt("game_score")?: 0
+                            }
+                            FinishScreen(
+                                modifier = Modifier.padding(paddingValue),
+                                score = score,
+                                navController = controller
+                            )
                         }
                     }
                 }

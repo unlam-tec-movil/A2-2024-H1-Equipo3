@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ar.edu.unlam.mobile.scaffolding.R
@@ -64,15 +67,14 @@ fun ErrorScreen(
 
 
 @Composable
-fun GameHistorySuccessScreen(modifier: Modifier = Modifier,games: List<Game> = emptyList()) {
+fun GameHistorySuccessScreen(modifier: Modifier = Modifier, games: List<Game> = emptyList()) {
     LazyColumn(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
         items(games) { game ->
             GameItem(
                 modifier = Modifier,
                 userName = game.userName,
                 score = game.score,
-                date = game.date,
-                correctQuestions = game.correctQuestions
+                date = game.date
             )
         }
     }
@@ -83,8 +85,7 @@ fun GameItem(
     modifier: Modifier = Modifier,
     userName: String,
     score: Int,
-    date: String,
-    correctQuestions: Int
+    date: String
 ) {
     Card(modifier = modifier) {
         Column {
@@ -99,12 +100,6 @@ fun GameItem(
                     GameItemData(data = stringResource(R.string.nombre, userName))
                     GameItemData(data = stringResource(R.string.puntuacion, score))
                     GameItemData(data = stringResource(R.string.fecha, date))
-                    GameItemData(
-                        data = stringResource(
-                            R.string.correctas,
-                            correctQuestions.toString()
-                        )
-                    )
                 }
             }
             Row(
@@ -139,7 +134,13 @@ fun GameItemData(modifier: Modifier = Modifier, data: String) {
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        Text(text = data)
+        Text(
+            text = data, style = MaterialTheme.typography.bodyMedium.copy(
+                color = Color.White, fontFamily = FontFamily(
+                    Font(R.font.press_start_2p)
+                )
+            )
+        )
     }
 }
 

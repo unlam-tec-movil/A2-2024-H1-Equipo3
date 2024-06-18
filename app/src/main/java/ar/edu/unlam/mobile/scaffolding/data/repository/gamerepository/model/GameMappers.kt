@@ -6,7 +6,6 @@ fun GameEntity.toGameDto(): GameDto {
     return GameDto(
         userName = this.userName,
         score = this.score,
-        correctQuestions = this.correctQuestions,
         date = this.date
     )
 }
@@ -15,7 +14,6 @@ fun GameDto.toGameEntity(): GameEntity {
     return GameEntity(
         userName = this.userName,
         score = this.score,
-        correctQuestions = this.correctQuestions,
         date = this.date
     )
 }
@@ -24,7 +22,6 @@ fun Game.toGameDto(): GameDto {
     return GameDto(
         userName = this.userName,
         score = this.score,
-        correctQuestions = this.correctQuestions,
         date = this.date
     )
 }
@@ -33,7 +30,6 @@ fun GameDto.toGame(): Game {
     return Game(
         userName = this.userName,
         score = this.score,
-        correctQuestions = this.correctQuestions,
         date = this.date
     )
 }

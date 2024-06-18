@@ -5,7 +5,6 @@ import androidx.room.PrimaryKey
 data class GameEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val userName: String,
-    val correctQuestions: Int,
     val score: Int,
     val date: String
 )

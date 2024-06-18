@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DbModule {
+object LocalModule {
     @Provides
     @Singleton
     fun provideTriviaDatabase(@ApplicationContext context: Context): TriviaDb {

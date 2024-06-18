@@ -25,7 +25,7 @@ fun PokeOptions(pokemonList: List<TriviaOptionUi>, onClick: (pokemonId: TriviaOp
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         pokemonList.forEach {
-            BotonOpcion(it.pokemon.nombre, onClick = {
+            BotonOpcion(it.pokemon.name, onClick = {
                 onClick(it)
             })
         }

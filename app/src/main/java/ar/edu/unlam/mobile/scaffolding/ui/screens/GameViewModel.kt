@@ -5,17 +5,25 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.edu.unlam.mobile.scaffolding.domain.model.TriviaGame
 import ar.edu.unlam.mobile.scaffolding.domain.model.TriviaOption
+import ar.edu.unlam.mobile.scaffolding.domain.model.toTriviaOption
 import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetOptionsUseCase
+import ar.edu.unlam.mobile.scaffolding.domain.usecases.SaveGameUseCase
+import ar.edu.unlam.mobile.scaffolding.domain.usecases.SelectOptionUseCase
 import ar.edu.unlam.mobile.scaffolding.ui.components.TriviaOptionUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class GameViewModel @Inject constructor(private val getOptionsUseCase: GetOptionsUseCase) :
+class GameViewModel @Inject constructor(
+    private val getOptionsUseCase: GetOptionsUseCase,
+    private val selectOptionUseCase: SelectOptionUseCase,
+    private val saveGameUseCase: SaveGameUseCase
+) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -32,16 +40,32 @@ class GameViewModel @Inject constructor(private val getOptionsUseCase: GetOption
 
     fun onOptionSelected(option: TriviaOptionUi) {
         val currentData = _uiState.value.gameUiState as GameUiState.Success
-        val gameData = currentData.gameData
-        // Todo lógica después de elegir
-        if (gameData.correctOption.option.nombre == option.pokemon.nombre) {
+        val triviaResult =
+            selectOptionUseCase.selectOption(
+                option.pokemon.toTriviaOption(),
+                currentData.score,
+                currentData.lifes
+            )
+        if (triviaResult.correct) {
             option.answerState = AnswerState.CORRECT
-        } else {
+            _uiState.update { state ->
+                state.copy(gameUiState = currentData.copy(score = triviaResult.score))
+            }
+            getTriviaOptions()
+        } else if (!triviaResult.finishGame) {
             option.answerState = AnswerState.INCORRECT
+            _uiState.update { state -> state.copy(gameUiState = currentData.copy(lifes = triviaResult.lifes)) }
+            getTriviaOptions()
+        } else {
+            viewModelScope.launch {
+                saveGameUseCase.saveGame(triviaResult.score)
+                _uiState.update { state -> state.copy(gameUiState = currentData.copy(finishGame = true)) }
+            }
         }
     }
 
-    fun getTriviaOptions() {
+    private fun getTriviaOptions() {
+        val currentData = _uiState.value.gameUiState as GameUiState.Success
         viewModelScope.launch {
             getOptionsUseCase.getNewGame()
                 .catch {
@@ -52,31 +76,18 @@ class GameViewModel @Inject constructor(private val getOptionsUseCase: GetOption
                     )
                 }
                 .collect {
-                    _uiState.value = _uiState.value.copy(
-                        gameUiState = GameUiState.Success(
-                            gameData = it,
-                            isOptionSelected = false
+                    _uiState.update { state ->
+                        state.copy(
+                            gameUiState = currentData.copy(
+                                gameData = it,
+                                isOptionSelected = false
+                            )
                         )
-                    )
+                    }
                 }
         }
     }
 }
-
-//fun onOptionSelected(option: Int) {
-//    val currentState = _uiState.value as GameUiState.Success
-//    val selectedOption = currentState.triviaOptions[option]
-//    when (selectedOption.isCorrect) {
-//        true -> currentState.triviaOptions[option].answerState = AnswerState.CORRECT
-//        false -> currentState.triviaOptions[option].answerState = AnswerState.INCORRECT
-//    }
-//    _uiState.update { currentState.copy(isOptionSelected = true) }
-//}
-//
-//fun onNextQuestion() {
-//    _uiState.update { GameUiState.Loading }
-//    getTriviaOptions()
-//}
 
 fun TriviaOption.toUi() = TriviaOptionUi(
     pokemon = this.option,
@@ -92,12 +103,15 @@ data class GameScreenUI(
 sealed interface GameUiState {
     data class Success(
         val gameData: TriviaGame,
-        val isOptionSelected: Boolean = false
+        val score: Int = 0,
+        val lifes: Int = 3,
+        val isOptionSelected: Boolean = false,
+        val finishGame: Boolean = false
     ) : GameUiState
 
     data object Loading : GameUiState
-
     data class Error(val message: String) : GameUiState
+
 }
 
 enum class AnswerState {

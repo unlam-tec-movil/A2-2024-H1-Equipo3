@@ -1,6 +1,8 @@
 package ar.edu.unlam.mobile.scaffolding.domain.services
 
+import ar.edu.unlam.mobile.scaffolding.domain.model.Pokemon
 import ar.edu.unlam.mobile.scaffolding.domain.model.TriviaGame
+import ar.edu.unlam.mobile.scaffolding.domain.model.TriviaOption
 import ar.edu.unlam.mobile.scaffolding.domain.model.toTriviaOption
 import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetOptionsUseCase
 import ar.edu.unlam.mobile.scaffolding.domain.usecases.PokemonRepository
@@ -11,21 +13,34 @@ import kotlinx.coroutines.flow.flow
 class GetOptionsService @Inject constructor(
     private val getPokemonRepository: PokemonRepository
 ) : GetOptionsUseCase {
+
+    companion object {
+        private const val optionsAmount = 4
+    }
+
+    private val offset: Int
+        get() = (0..200).random()
+
     override fun getNewGame(): Flow<TriviaGame> {
         return flow {
-            getPokemonRepository.getOptions()
-                .collect {
-                    val triviaOptions = it.map {
-                        it.toTriviaOption()
-                    }
-                        .take(4)
+            getPokemonRepository.getOptions(optionsAmount, offset)
+                .collect { pokemons ->
+                    var correctOption: TriviaOption? = null
+                    val triviaOptions = pokemons
                         .shuffled()
-                    val correctOption = triviaOptions.first()
-                    triviaOptions.first().isCorrect = true
-                    triviaOptions.shuffled()
-                    emit(TriviaGame(triviaOptions, correctOption))
+                        .mapIndexed { index, pokemon ->
+                            if (index == 0) {
+                                val pokemonDetail = getPokemonRepository.getPokemonDetail(pokemon.id)
+                                correctOption = pokemonDetail.toTriviaOption().copy(isCorrect = true)
+                                correctOption!!
+                            }else{
+                                pokemon.toTriviaOption()
+                            }
+                        }
+                        .shuffled()
+                    emit(TriviaGame(triviaOptions, correctOption!!))
                 }
-        }
+    }
     }
 }
 
