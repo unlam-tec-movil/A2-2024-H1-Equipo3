@@ -1,5 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.data.di
 
+import android.util.Log
 import ar.edu.unlam.mobile.scaffolding.data.network.PokemonService
 import dagger.Module
 import dagger.Provides
@@ -16,6 +17,7 @@ import javax.inject.Singleton
 object NetworkModule {
 
     private const val BASE_URL = "https://pokeapi.co/api/v2/"
+
     @Provides
     @Singleton
     fun providesRetrofit(): Retrofit {
@@ -31,6 +33,7 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
+
             })
             .build()
     }

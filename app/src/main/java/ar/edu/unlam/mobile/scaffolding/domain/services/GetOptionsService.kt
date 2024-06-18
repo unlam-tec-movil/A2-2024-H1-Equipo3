@@ -32,7 +32,7 @@ class GetOptionsService @Inject constructor(
                         .mapIndexed { index, pokemon ->
                             if (index == 0) {
                                 val pokemonDetail =
-                                    getPokemonRepository.getPokemonDetail(pokemon.id)
+                                    getPokemonRepository.getPokemonDetail(pokemon.name)
                                 correctOption =
                                     pokemonDetail.toTriviaOption().copy(isCorrect = true)
                                 correctOption!!
