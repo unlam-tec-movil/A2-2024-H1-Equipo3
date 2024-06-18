@@ -42,7 +42,7 @@ class GameViewModel @Inject constructor(
         val currentData = _uiState.value.gameUiState as GameUiState.Success
         val triviaResult =
             selectOptionUseCase.selectOption(
-                option.pokemon.toTriviaOption(),
+                option.toTriviaOption(),
                 currentData.score,
                 currentData.lifes
             )
@@ -51,11 +51,11 @@ class GameViewModel @Inject constructor(
             _uiState.update { state ->
                 state.copy(gameUiState = currentData.copy(score = triviaResult.score))
             }
-            getTriviaOptions()
+            startNewGame()
         } else if (!triviaResult.finishGame) {
             option.answerState = AnswerState.INCORRECT
             _uiState.update { state -> state.copy(gameUiState = currentData.copy(lifes = triviaResult.lifes)) }
-            getTriviaOptions()
+            startNewGame()
         } else {
             viewModelScope.launch {
                 saveGameUseCase.saveGame(triviaResult.score)
@@ -65,6 +65,29 @@ class GameViewModel @Inject constructor(
     }
 
     private fun getTriviaOptions() {
+        viewModelScope.launch {
+            getOptionsUseCase.getNewGame()
+                .catch {
+                    _uiState.value = _uiState.value.copy(
+                        gameUiState = GameUiState.Error(
+                            message = it.localizedMessage ?: "Error"
+                        )
+                    )
+                }
+                .collect {
+                    _uiState.update { state ->
+                        state.copy(
+                            gameUiState = GameUiState.Success(
+                                gameData = it,
+                                isOptionSelected = false
+                            )
+                        )
+                    }
+                }
+        }
+    }
+
+    fun startNewGame() {
         val currentData = _uiState.value.gameUiState as GameUiState.Success
         viewModelScope.launch {
             getOptionsUseCase.getNewGame()
@@ -120,3 +143,5 @@ enum class AnswerState {
     INCORRECT
 }
 
+
+fun TriviaOptionUi.toTriviaOption() = TriviaOption(this.pokemon, this.isCorrect)

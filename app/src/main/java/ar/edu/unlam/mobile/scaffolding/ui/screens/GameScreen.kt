@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -66,7 +69,7 @@ fun GameScreen(
             )
             LaunchedEffect(key1 = gameState) {
                 if (gameState.finishGame) {
-                    navController.navigate("${NavigationRoutes.FinishGame.route}/${gameState.score}")
+                    navController.navigate("${NavigationRoutes.FinishGame.route.takeWhile { it != '/' }}/${gameState.score}")
                 }
             }
         }
@@ -81,27 +84,28 @@ fun GameScreen(
 
 @Composable
 fun FinishScreen(modifier: Modifier = Modifier, navController: NavController, score: Int) {
-    Box(modifier = modifier.background(rojoPokeball), contentAlignment = Alignment.Center) {
+    Box(modifier = modifier.background(rojoPokeball).fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.matchParentSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = stringResource(R.string.fin_del_juego),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.displayLarge,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Text(
                 text = stringResource(R.string.puntuacion_final, score),
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.displayMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Button(
                 onClick = { navController.popBackStack(NavigationRoutes.Menu.route, false) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White)
             ) {
                 Text(
                     text = stringResource(R.string.menu_principal),
@@ -157,11 +161,13 @@ fun GameScreenUI(
 
             Spacer(modifier = Modifier.height(35.dp))
             PokeOptions(pokemonList, selectedPoke)
-            Spacer(modifier = Modifier.height(35.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(R.string.puntaje_game, score),
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                style = MaterialTheme.typography.titleLarge.copy(color = rojoPokeball, fontFamily = FontFamily(
+                    Font(R.font.press_start_2p)
+                )),
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             )
         }
 

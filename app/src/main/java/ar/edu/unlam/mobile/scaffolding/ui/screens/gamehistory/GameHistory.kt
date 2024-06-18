@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ar.edu.unlam.mobile.scaffolding.R
 import ar.edu.unlam.mobile.scaffolding.domain.model.Game
 import ar.edu.unlam.mobile.scaffolding.ui.components.LoadingScreen
+import ar.edu.unlam.mobile.scaffolding.ui.theme.rojoPokeball
 
 @Composable
 fun GameHistoryScreen(
@@ -68,7 +72,11 @@ fun ErrorScreen(
 
 @Composable
 fun GameHistorySuccessScreen(modifier: Modifier = Modifier, games: List<Game> = emptyList()) {
-    LazyColumn(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    LazyColumn(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(16.dp)
+    ) {
         items(games) { game ->
             GameItem(
                 modifier = Modifier,
@@ -87,13 +95,17 @@ fun GameItem(
     score: Int,
     date: String
 ) {
-    Card(modifier = modifier) {
+    Card(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors().copy(containerColor = rojoPokeball)
+    ) {
         Column {
             Box(
                 modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 20.dp)
                     .fillMaxWidth()
                     .background(Color.DarkGray)
-                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 24.dp)
 
             ) {
                 Column {
@@ -105,7 +117,8 @@ fun GameItem(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 BackgroundDots(
                     modifier = Modifier

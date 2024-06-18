@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                         composable(NavigationRoutes.GameHistory.route) {
                             GameHistoryScreen(modifier = Modifier.padding(paddingValue))
                         }
-                        composable(NavigationRoutes.FinishGame.route,
+                        composable(route = NavigationRoutes.FinishGame.route,
                             arguments = listOf(navArgument("game_score") { type = NavType.IntType })) { backentry ->
                             val score = rememberSaveable {
                                 backentry.arguments?.getInt("game_score")?: 0

@@ -8,6 +8,7 @@ import android.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,14 +22,12 @@ import kotlinx.coroutines.delay
 @Composable
 fun LoadingScreen() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(
-            modifier = Modifier.matchParentSize().align(Alignment.Center),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        Column(modifier = Modifier.align(Alignment.Center).matchParentSize(), horizontalAlignment = Alignment.CenterHorizontally) {
             CircularProgressIndicator()
+            Spacer(modifier = Modifier.size(16.dp))
             Text(
                 text = "Cargando",
-                color = androidx.compose.ui.graphics.Color.Black
+                color = androidx.compose.ui.graphics.Color.White,
             )
         }
     }

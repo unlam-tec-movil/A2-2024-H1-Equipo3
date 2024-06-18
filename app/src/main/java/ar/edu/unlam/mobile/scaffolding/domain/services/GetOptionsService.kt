@@ -19,7 +19,7 @@ class GetOptionsService @Inject constructor(
     }
 
     private val offset: Int
-        get() = (0..200).random()
+        get() = (0..500).random()
 
     override fun getNewGame(): Flow<TriviaGame> {
         return flow {
@@ -30,17 +30,19 @@ class GetOptionsService @Inject constructor(
                         .shuffled()
                         .mapIndexed { index, pokemon ->
                             if (index == 0) {
-                                val pokemonDetail = getPokemonRepository.getPokemonDetail(pokemon.id)
-                                correctOption = pokemonDetail.toTriviaOption().copy(isCorrect = true)
+                                val pokemonDetail =
+                                    getPokemonRepository.getPokemonDetail(pokemon.id)
+                                correctOption =
+                                    pokemonDetail.toTriviaOption().copy(isCorrect = true)
                                 correctOption!!
-                            }else{
+                            } else {
                                 pokemon.toTriviaOption()
                             }
                         }
                         .shuffled()
                     emit(TriviaGame(triviaOptions, correctOption!!))
                 }
-    }
+        }
     }
 }
 
