@@ -81,42 +81,6 @@ fun GameScreen(
     }
 }
 
-
-@Composable
-fun FinishScreen(modifier: Modifier = Modifier, navController: NavController, score: Int) {
-    Box(modifier = modifier.background(rojoPokeball).fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(
-            modifier = Modifier.matchParentSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(R.string.fin_del_juego),
-                style = MaterialTheme.typography.displayLarge,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-            Text(
-                text = stringResource(R.string.puntuacion_final, score),
-                style = MaterialTheme.typography.displayMedium,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-            Button(
-                onClick = { navController.popBackStack(NavigationRoutes.Menu.route, false) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White)
-            ) {
-                Text(
-                    text = stringResource(R.string.menu_principal),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
-        }
-    }
-}
-
-
 @Composable
 fun GameScreenUI(
     modifier: Modifier,

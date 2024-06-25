@@ -17,6 +17,7 @@ fun PokemonListDto.toPokemon(): List<Pokemon> {
     return results.map { Pokemon(id = it.url.getIdFromPath(), name = it.name, image = "") }
 }
 
+
 fun PokemonResponse.toPokemonDto(id:String): PokemonDto {
     return PokemonDto(
         id = id,

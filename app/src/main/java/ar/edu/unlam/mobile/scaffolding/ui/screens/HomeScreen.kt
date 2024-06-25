@@ -29,6 +29,7 @@ import androidx.navigation.NavController
 import ar.edu.unlam.mobile.scaffolding.MainActivity
 import ar.edu.unlam.mobile.scaffolding.NavigationRoutes
 import ar.edu.unlam.mobile.scaffolding.R
+import ar.edu.unlam.mobile.scaffolding.ui.components.MenuButton
 import ar.edu.unlam.mobile.scaffolding.ui.components.StartGameButton
 
 @Composable
@@ -120,21 +121,4 @@ fun PantallaInicio(
     }
 }
 
-
-@Composable
-fun MenuButton(modifier: Modifier = Modifier, text: String, action: () -> Unit) {
-    Box(
-        modifier = modifier,
-        contentAlignment = androidx.compose.ui.Alignment.Center
-    ) {
-        StartGameButton(modifier = Modifier.size(150.dp), onClick = action)
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily(Font(R.font.press_start_2p))),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-            color = Color.White,
-            modifier = Modifier
-                .align(Alignment.Center)
-        )
-    }
 }
