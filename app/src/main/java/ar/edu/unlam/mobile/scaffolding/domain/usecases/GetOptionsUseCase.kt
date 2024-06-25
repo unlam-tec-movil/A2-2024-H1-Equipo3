@@ -1,7 +1,8 @@
 package ar.edu.unlam.mobile.scaffolding.domain.usecases
 
-import ar.edu.unlam.mobile.scaffolding.domain.model.TriviaOption
+import ar.edu.unlam.mobile.scaffolding.domain.model.TriviaGame
+import kotlinx.coroutines.flow.Flow
 
 interface GetOptionsUseCase {
-     fun getOptions(): List<TriviaOption>
+    fun getNewGame(): Flow<TriviaGame>
 }

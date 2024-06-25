@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">ScaffoldingV2</string>
     <string name="loading_esp">Cargando...</string>
+    <string name="nombre">Nombre: %1$s</string>
+    <string name="puntuacion">Puntuacion: %1$s</string>
+    <string name="fecha">Fecha: %1$s</string>
+    <string name="correctas">Correctas: %1$s</string>
+    <string name="uknown_error">Uknown error</string>
+    <string name="salir">Salir</string>
+    <string name="empezar">Empezar</string>
+    <string name="partidas">Partidas</string>
+    <string name="fin_del_juego">Fin del juego</string>
+    <string name="menu_principal">Menu Principal</string>
+    <string name="puntuacion_final">Puntuacion Final: %1$s</string>
+    <string name="puntaje_game">Puntaje : %1$s</string>
 
 </resources>

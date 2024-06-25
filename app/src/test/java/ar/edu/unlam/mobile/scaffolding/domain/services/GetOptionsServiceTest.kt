@@ -1,6 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.domain.services
 
-import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetPokemonRepositoryUseCase
+import ar.edu.unlam.mobile.scaffolding.domain.usecases.PokemonRepository
 import ar.edu.unlam.mobile.scaffolding.domain.usecases.GetOptionsUseCase
 import org.junit.Assert.*
 
@@ -10,7 +10,7 @@ import org.junit.Test
 class GetOptionsServiceTest {
 
     private lateinit var getOptionsService: GetOptionsUseCase
-    private val pokemonRepository: GetPokemonRepositoryUseCase = FakeGetPokemonRepositoryUseCase()
+    private val pokemonRepository: PokemonRepository = FakeGetPokemonRepositoryUseCase()
     @Before
     fun setUp() {
         getOptionsService = GetOptionsService(pokemonRepository)
@@ -18,27 +18,27 @@ class GetOptionsServiceTest {
 
     @Test
     fun `getOptions should return 4 options`() {
-        val options = getOptionsService.getOptions()
+        val options = getOptionsService.getNewGame()
         assertEquals(4, options.size)
     }
 
     @Test
     fun `getOptions should return 4 different options`() {
-        val options = getOptionsService.getOptions()
+        val options = getOptionsService.getNewGame()
         val distinctOptions = options.distinctBy { it.option }
         assertEquals(4, distinctOptions.size)
     }
 
     @Test
     fun `getOptions should return 1 correct option`() {
-        val options = getOptionsService.getOptions()
+        val options = getOptionsService.getNewGame()
         val correctOptions = options.filter { it.isCorrect }
         assertEquals(1, correctOptions.size)
     }
 
     @Test
     fun `getOptions should return 3 incorrect options`() {
-        val options = getOptionsService.getOptions()
+        val options = getOptionsService.getNewGame()
         val incorrectOptions = options.filter { !it.isCorrect }
         assertEquals(3, incorrectOptions.size)
     }
@@ -46,7 +46,7 @@ class GetOptionsServiceTest {
     @Test
     fun `getOptions should return shuffled options`() {
         val optionsWithoutShuffle = pokemonRepository.getOptions().take(4)
-        val options = getOptionsService.getOptions()
+        val options = getOptionsService.getNewGame()
         assertNotEquals(options, optionsWithoutShuffle)
     }
 }
